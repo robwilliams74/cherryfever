@@ -258,3 +258,159 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// ========== CATS FUNCTIONALITY ==========
+
+const catsContainer = document.getElementById('cats-container');
+const catEmojis = ['🐱', '🐈', '😺', '😸', '😻', '🐈‍⬛'];
+const niceMessages = [
+    'Good day! 🌟',
+    'Have a wonderful day! ✨',
+    'You\'re amazing! 💖',
+    'Stay awesome! 🌈',
+    'Meow! Have a purr-fect day! 😺',
+    'Sending you good vibes! ☀️',
+    'You\'re pawsome! 🐾',
+    'Keep smiling! 😊',
+    'You brighten my day! 🌸',
+    'Much love to you! 💕',
+    'You\'re doing great! ⭐',
+    'Purrs and hugs! 🤗',
+    'Beautiful soul! 🦋',
+    'Shine bright! ✨',
+    'You matter! 💝'
+];
+
+// Create cats
+function createCat() {
+    const cat = document.createElement('div');
+    cat.className = 'cat';
+    cat.textContent = catEmojis[Math.floor(Math.random() * catEmojis.length)];
+
+    // Random starting position at the edge
+    const startFromTop = Math.random() > 0.5;
+    if (startFromTop) {
+        cat.style.left = Math.random() * window.innerWidth + 'px';
+        cat.style.top = '-50px';
+    } else {
+        cat.style.left = '-50px';
+        cat.style.top = Math.random() * window.innerHeight + 'px';
+    }
+
+    catsContainer.appendChild(cat);
+
+    // Animate cat movement
+    animateCat(cat);
+
+    // Click handler
+    cat.addEventListener('click', () => handleCatClick(cat));
+
+    return cat;
+}
+
+// Animate cat movement
+function animateCat(cat) {
+    const duration = 8000 + Math.random() * 7000; // 8-15 seconds
+    const startTime = Date.now();
+
+    // Random destination
+    const destX = Math.random() * (window.innerWidth - 100);
+    const destY = Math.random() * (window.innerHeight - 100);
+
+    const startX = parseFloat(cat.style.left);
+    const startY = parseFloat(cat.style.top);
+
+    function animate() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function
+        const easeProgress = progress < 0.5
+            ? 2 * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+        const currentX = startX + (destX - startX) * easeProgress;
+        const currentY = startY + (destY - startY) * easeProgress;
+
+        cat.style.left = currentX + 'px';
+        cat.style.top = currentY + 'px';
+
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            // After reaching destination, remove and create new cat
+            setTimeout(() => {
+                cat.remove();
+                createCat();
+            }, 1000);
+        }
+    }
+
+    animate();
+}
+
+// Handle cat click
+function handleCatClick(cat) {
+    // Play meow sound (using Web Audio API to create a simple tone)
+    playMeow();
+
+    // Show message
+    const message = document.createElement('div');
+    message.className = 'cat-message';
+    message.textContent = niceMessages[Math.floor(Math.random() * niceMessages.length)];
+
+    const rect = cat.getBoundingClientRect();
+    message.style.left = rect.left + rect.width / 2 + 'px';
+    message.style.top = rect.top - 10 + 'px';
+    message.style.transform = 'translateX(-50%)';
+
+    document.body.appendChild(message);
+
+    // Remove message after animation
+    setTimeout(() => {
+        message.remove();
+    }, 3000);
+
+    // Make cat jump
+    cat.style.transform = 'scale(1.3) rotate(10deg)';
+    setTimeout(() => {
+        cat.style.transform = '';
+    }, 200);
+}
+
+// Play meow sound using Web Audio API
+function playMeow() {
+    try {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        // Create a meow-like sound
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        oscillator.frequency.exponentialRampToValueAtTime(400, audioContext.currentTime + 0.1);
+        oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.2);
+
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+    } catch (error) {
+        console.log('Audio not supported');
+    }
+}
+
+// Initialize cats
+function initializeCats() {
+    // Create 3-5 cats
+    const numCats = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < numCats; i++) {
+        setTimeout(() => createCat(), i * 1000);
+    }
+}
+
+// Start cats when page loads
+initializeCats();
