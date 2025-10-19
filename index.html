@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalina's Gallery</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Password Protection Screen -->
+    <div id="password-screen" class="password-screen">
+        <div class="password-container">
+            <h1>🌸 Catalina's Gallery</h1>
+            <p>Enter password to continue</p>
+            <input type="password" id="password-input" placeholder="Password">
+            <button id="password-submit">Enter</button>
+            <p id="password-error" class="error-message"></p>
+        </div>
+    </div>
+
+    <!-- Main Gallery -->
+    <div id="main-content" class="main-content hidden">
+        <header>
+            <h1>🌸 Catalina's Gallery</h1>
+            <button id="logout-btn" class="logout-btn">Logout</button>
+        </header>
+
+        <div class="container">
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="tab-btn active" data-filter="all">All</button>
+                <button class="tab-btn" data-filter="photos">Photos</button>
+                <button class="tab-btn" data-filter="videos">Videos</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div id="gallery" class="gallery">
+                <!-- Photos will be dynamically loaded here -->
+                <div class="gallery-item photo" data-type="photo">
+                    <img src="photos/sample.jpg" alt="Sample photo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22400%22 height=%22400%22/%3E%3Ctext fill=%22%23999%22 font-family=%22Arial%22 font-size=%2224%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EAdd photos here%3C/text%3E%3C/svg%3E'">
+                    <div class="overlay">
+                        <span class="view-btn">View</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Section -->
+            <div class="upload-section">
+                <h2>Add New Media</h2>
+                <div class="upload-controls">
+                    <input type="file" id="file-input" accept="image/*,video/*" multiple>
+                    <button id="upload-btn">Choose Files</button>
+                    <p class="upload-info">Click to add photos or videos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lightbox for viewing full size -->
+        <div id="lightbox" class="lightbox hidden">
+            <span class="close-lightbox">&times;</span>
+            <div class="lightbox-content">
+                <img id="lightbox-img" src="" alt="">
+                <video id="lightbox-video" controls></video>
+            </div>
+            <button class="nav-btn prev-btn">&#10094;</button>
+            <button class="nav-btn next-btn">&#10095;</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Media files (optional - uncomment if you want to keep media out of git)
+# photos/*
+# videos/*
+# !photos/.gitkeep
+# !videos/.gitkeep
