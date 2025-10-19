@@ -1,5 +1,5 @@
 // Configuration
-const PASSWORD = 'catalina2024'; // Change this to your preferred password
+const PASSWORD = 'catalina2025'; // Change this to your preferred password
 const SESSION_KEY = 'catalina_gallery_session';
 
 // State
