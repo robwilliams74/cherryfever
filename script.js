@@ -2,6 +2,66 @@
 const PASSWORD = 'catalina2025'; // Change this to your preferred password
 const SESSION_KEY = 'catalina_gallery_session';
 
+// Pre-loaded photos from folders
+const PRELOADED_PHOTOS = [
+    'photos/Катюша/Катюша_01.png',
+    'photos/Катюша/Катюша_02.png',
+    'photos/Катюша/Катюша_03.png',
+    'photos/Катюша/Катюша_04.png',
+    'photos/Катюша/Катюша_05.png',
+    'photos/Катюша/Катюша_06.png',
+    'photos/Катюша/Катюша_07.png',
+    'photos/Катюша/Катюша_08.png',
+    'photos/Катюша/Катюша_09.png',
+    'photos/Катюша/Катюша_10.png',
+    'photos/Катюша/Катюша_11.png',
+    'photos/Катюша/Катюша_12.png',
+    'photos/Катюша/Катюша_13.png',
+    'photos/Катюша/Катюша_14.png',
+    'photos/Катюша/Катюша_15.png',
+    'photos/Катюша/Катюша_16.png',
+    'photos/Катюша/Катюша_17.png',
+    'photos/Катюша/Катюша_18.png',
+    'photos/Катюша/Катюша_19.png',
+    'photos/Катюша/Катюша_20.png',
+    'photos/Катюша/Катюша_21.png',
+    'photos/Катюша/Катюша_22.png',
+    'photos/Катюша/Катюша_23.png',
+    'photos/Катюша/Катюша_24.png',
+    'photos/Катюша/Катюша_25.png',
+    'photos/Катюша/Катюша_26.png',
+    'photos/Катюша/Катюша_27.png',
+    'photos/cats/cats_01.png',
+    'photos/cats/cats_02.png',
+    'photos/cats/cats_03.png',
+    'photos/cats/cats_04.png',
+    'photos/cats/cats_05.png',
+    'photos/olympus/olympus_01.png',
+    'photos/olympus/olympus_02.png',
+    'photos/olympus/olympus_03.png',
+    'photos/olympus/olympus_04.png',
+    'photos/olympus/olympus_05.png',
+    'photos/olympus/olympus_06.png',
+    'photos/olympus/olympus_07.png',
+    'photos/olympus/olympus_08.png',
+    'photos/olympus/olympus_09.png',
+    'photos/olympus/olympus_10.png',
+    'photos/olympus/olympus_11.png',
+    'photos/olympus/olympus_12.png',
+    'photos/olympus/olympus_13.png',
+    'photos/olympus/olympus_14.png',
+    'photos/olympus/olympus_15.png',
+    'photos/olympus/olympus_16.png',
+    'photos/olympus/olympus_17.png',
+    'photos/olympus/olympus_18.png',
+    'photos/olympus/olympus_19.png',
+    'photos/olympus/olympus_20.png',
+    'photos/olympus/olympus_21.png',
+    'photos/olympus/olympus_22.png',
+    'photos/olympus/olympus_23.png',
+    'photos/olympus/olympus_24.png'
+];
+
 // State
 let currentMediaIndex = 0;
 let mediaItems = [];
@@ -121,12 +181,24 @@ function handlePasswordSubmit() {
 
 // Gallery Management
 function loadGallery() {
-    // Load media from localStorage
+    // Initialize with preloaded photos
+    mediaItems = PRELOADED_PHOTOS.map((src, index) => ({
+        type: 'photo',
+        src: src,
+        name: src.split('/').pop(),
+        date: new Date().toISOString(),
+        preloaded: true
+    }));
+
+    // Load additional media from localStorage (user uploads)
     const savedMedia = localStorage.getItem('catalina_media');
     if (savedMedia) {
-        mediaItems = JSON.parse(savedMedia);
-        renderGallery();
+        const uploads = JSON.parse(savedMedia);
+        // Add user uploads to the end
+        mediaItems = [...mediaItems, ...uploads.filter(item => !item.preloaded)];
     }
+
+    renderGallery();
 }
 
 function renderGallery() {
